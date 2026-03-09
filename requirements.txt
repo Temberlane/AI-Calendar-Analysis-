@@ -1,0 +1,3 @@
+pyobjc-core
+pyobjc-framework-EventKit
+pyobjc-framework-Cocoa
