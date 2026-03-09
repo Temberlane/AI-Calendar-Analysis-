@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from models import CalendarData, CalendarEvent, Reminder
+from utils.models import CalendarData, CalendarEvent, Reminder
 
 
 def sanitize_name(name: str) -> str:

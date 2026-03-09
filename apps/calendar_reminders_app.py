@@ -6,17 +6,21 @@ This application requests access to Apple Calendar and Reminders,
 then parses all information into memory for analysis.
 
 Modules:
-    - models.py: Data classes (CalendarEvent, Reminder, CalendarData)
-    - accessor.py: EventKit access and data fetching
-    - exporter.py: JSON export functionality
+    - utils/models.py: Data classes (CalendarEvent, Reminder, CalendarData)
+    - utils/accessor.py: EventKit access and data fetching
+    - utils/exporter.py: JSON export functionality
 """
 
 import datetime
+import sys
 from pathlib import Path
 
-from models import CalendarData
-from accessor import AppleDataAccessor, is_eventkit_available
-from exporter import DataExporter
+# Add project root to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from utils.models import CalendarData
+from utils.accessor import AppleDataAccessor, is_eventkit_available
+from utils.exporter import DataExporter
 
 
 def print_summary(data: CalendarData) -> None:
@@ -104,10 +108,11 @@ def main():
     print(f"  • {len(data.reminder_lists)} reminder lists")
     print(f"  • {len(data.reminders)} reminders")
     
-    # Export to JSON
-    script_dir = Path(__file__).parent.absolute()
+    # Export to JSON - export to data/ directory
+    project_root = Path(__file__).parent.parent.absolute()
+    data_dir = project_root / "data"
     exporter = DataExporter(data)
-    exporter.export_to_json(str(script_dir))
+    exporter.export_to_json(str(data_dir))
     
     return accessor
 

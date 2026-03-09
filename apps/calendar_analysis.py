@@ -20,6 +20,10 @@ from datetime import datetime
 from typing import Optional
 import requests
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).parent.parent / ".env")
+
 
 # Provider configuration
 PROVIDER_OLLAMA = "ollama"
@@ -66,10 +70,10 @@ def init_provider(provider: str, api_key: Optional[str] = None) -> None:
             print("Error: anthropic package not installed. Run: pip install anthropic")
             raise
         
-        # Get API key from argument or environment
-        key = api_key or os.environ.get("ANTHROPIC_API_KEY")
+        # Get API key from argument, environment, or .env file
+        key = api_key or os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("my_key")
         if not key:
-            print("Error: No API key provided. Set ANTHROPIC_API_KEY or use --api-key")
+            print("Error: No API key provided. Set ANTHROPIC_API_KEY in .env or use --api-key")
             raise ValueError("Missing Anthropic API key")
         
         _anthropic_client = anthropic.Anthropic(api_key=key)
@@ -169,8 +173,8 @@ def load_monthly_data(base_dir: str = ".") -> dict:
         }
     """
     base_path = Path(base_dir)
-    cal_dir = base_path / "cal_data" / "Calendars"
-    reminder_dir = base_path / "reminder_data" / "Reminders"
+    cal_dir = base_path / "data" / "cal_data" / "Calendars"
+    reminder_dir = base_path / "data" / "reminder_data" / "Reminders"
     
     data = {
         'calendars': {},
@@ -337,7 +341,7 @@ def run_analysis(
     Run the full calendar analysis pipeline.
     
     Args:
-        base_dir: Base directory containing cal_data and reminder_data
+        base_dir: Base directory containing data/cal_data and data/reminder_data
         output_dir: Directory to save analysis results (default: base_dir/analysis)
         skip_summaries: If True, load existing summaries instead of regenerating
         summary_model: Model to use for monthly summaries
@@ -445,7 +449,7 @@ def main():
     parser.add_argument(
         "--dir", "-d",
         default=".",
-        help="Base directory containing cal_data and reminder_data (default: current directory)"
+        help="Base directory containing data/ folder with cal_data and reminder_data (default: current directory)"
     )
     parser.add_argument(
         "--output", "-o",

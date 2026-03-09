@@ -9,7 +9,7 @@ import datetime
 import threading
 from typing import Optional
 
-from models import CalendarEvent, Reminder, CalendarData, ReminderPriority
+from utils.models import CalendarEvent, Reminder, CalendarData, ReminderPriority
 
 # EventKit imports via PyObjC
 try:

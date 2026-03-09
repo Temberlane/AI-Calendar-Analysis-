@@ -1,6 +1,10 @@
 # Data output directories (contain personal calendar/reminder data)
 /cal_data/
 /reminder_data/
+/data/
+
+# Environment variables (contains API keys)
+.env
 
 # Python
 __pycache__/

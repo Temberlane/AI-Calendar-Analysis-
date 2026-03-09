@@ -2,6 +2,24 @@
 
 A Python application that accesses Apple Calendar and Reminders data for AI-powered analysis and actionable insights.
 
+## Project Structure
+
+```
+├── apps/                      # Main applications
+│   ├── calendar_analysis.py   # AI-powered analysis using LLMs
+│   ├── calendar_reminders_app.py  # Data export application
+│   └── token_count_analyzer.py    # Token estimation tool
+├── utils/                     # Utility modules
+│   ├── models.py              # Data classes (CalendarEvent, Reminder, etc.)
+│   ├── accessor.py            # EventKit access and data fetching
+│   └── exporter.py            # JSON export functionality
+├── data/                      # User data (exported calendar/reminder data)
+│   ├── cal_data/              # Calendar data
+│   └── reminder_data/         # Reminder data
+├── test_data/                 # Test data for development
+└── analysis/                  # Generated analysis outputs
+```
+
 ## Features
 
 - 📅 **Calendar Access**: Fetches all calendars and events via EventKit
@@ -29,7 +47,7 @@ pip install -r requirements.txt
 ### Export Calendar Data
 
 ```bash
-python calendar_reminders_app.py
+python apps/calendar_reminders_app.py
 ```
 
 On first run, macOS will prompt you to grant access to Calendar and Reminders. You may need to:
@@ -42,7 +60,7 @@ On first run, macOS will prompt you to grant access to Calendar and Reminders. Y
 #### Using Ollama (default, local):
 
 ```bash
-python CALENDER_ANALYSIS.py
+python apps/calendar_analysis.py
 ```
 
 #### Using Claude API:
@@ -50,20 +68,26 @@ python CALENDER_ANALYSIS.py
 ```bash
 # Option 1: Set environment variable
 export ANTHROPIC_API_KEY="your-api-key-here"
-python CALENDER_ANALYSIS.py --provider claude
+python apps/calendar_analysis.py --provider claude
 
 # Option 2: Pass API key directly
-python CALENDER_ANALYSIS.py --provider claude --api-key "your-api-key-here"
+python apps/calendar_analysis.py --provider claude --api-key "your-api-key-here"
 ```
 
 #### Full Options:
 
 ```bash
-python CALENDER_ANALYSIS.py --help
+python apps/calendar_analysis.py --help
 
 # Examples:
-python CALENDER_ANALYSIS.py --provider claude -s  # Skip regenerating summaries
-python CALENDER_ANALYSIS.py -p claude --summary-model claude-3-haiku-20240307  # Use different model
+python apps/calendar_analysis.py --provider claude -s  # Skip regenerating summaries
+python apps/calendar_analysis.py -p claude --summary-model claude-3-haiku-20240307  # Use different model
+```
+
+### Token Analysis
+
+```bash
+python apps/token_count_analyzer.py
 ```
 
 ## Data Structure
@@ -85,7 +109,7 @@ The application loads data into these structures:
 ## Programmatic Usage
 
 ```python
-from calendar_reminders_app import AppleDataAccessor
+from utils.accessor import AppleDataAccessor
 
 # Initialize and request access
 accessor = AppleDataAccessor()
