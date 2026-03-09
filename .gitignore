@@ -1,6 +1,6 @@
 # Data output directories (contain personal calendar/reminder data)
-cal_data/
-reminder_data/
+/cal_data/
+/reminder_data/
 
 # Python
 __pycache__/

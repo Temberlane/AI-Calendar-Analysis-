@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Book Valentine's restaurant",
+    "notes": "Chez Pierre - 7pm",
+    "due_date": "2026-02-07T00:00:00",
+    "completion_date": "2026-02-05T14:00:00",
+    "is_completed": true,
+    "priority": "HIGH",
+    "list_name": "Personal",
+    "reminder_id": "rem-006"
+  },
+  {
+    "title": "Prepare conference presentation",
+    "notes": "AI trends slides",
+    "due_date": "2026-02-17T00:00:00",
+    "completion_date": "2026-02-16T20:00:00",
+    "is_completed": true,
+    "priority": "HIGH",
+    "list_name": "Work",
+    "reminder_id": "rem-007"
+  },
+  {
+    "title": "Submit expense report",
+    "notes": "Conference travel expenses",
+    "due_date": "2026-02-22T00:00:00",
+    "completion_date": null,
+    "is_completed": false,
+    "priority": "MEDIUM",
+    "list_name": "Work",
+    "reminder_id": "rem-008"
+  },
+  {
+    "title": "Buy birthday gift for Alex",
+    "notes": null,
+    "due_date": "2026-02-28T00:00:00",
+    "completion_date": null,
+    "is_completed": false,
+    "priority": "NONE",
+    "list_name": "Shopping",
+    "reminder_id": "rem-009"
+  }
+]
