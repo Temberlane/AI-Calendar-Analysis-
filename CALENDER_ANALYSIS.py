@@ -328,8 +328,10 @@ def run_analysis(
     base_dir: str = ".",
     output_dir: Optional[str] = None,
     skip_summaries: bool = False,
-    summary_model: str = SUMMARY_MODEL,
-    analysis_model: str = ANALYSIS_MODEL
+    summary_model: Optional[str] = None,
+    analysis_model: Optional[str] = None,
+    provider: str = DEFAULT_PROVIDER,
+    api_key: Optional[str] = None
 ) -> None:
     """
     Run the full calendar analysis pipeline.
@@ -340,10 +342,21 @@ def run_analysis(
         skip_summaries: If True, load existing summaries instead of regenerating
         summary_model: Model to use for monthly summaries
         analysis_model: Model to use for long-term analysis
+        provider: LLM provider ('ollama' or 'claude')
+        api_key: API key for Claude (optional, can use env var)
     """
     print("=" * 60)
     print("CALENDAR & REMINDER ANALYSIS")
     print("=" * 60)
+    
+    # Initialize provider
+    init_provider(provider, api_key)
+    
+    # Use provided models or fall back to defaults (which are set by init_provider)
+    if summary_model is None:
+        summary_model = SUMMARY_MODEL
+    if analysis_model is None:
+        analysis_model = ANALYSIS_MODEL
     
     # Setup output directory
     output_path = Path(output_dir) if output_dir else Path(base_dir) / "analysis"
@@ -427,7 +440,7 @@ def run_analysis(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Analyze calendar and reminder data using local LLMs via Ollama"
+        description="Analyze calendar and reminder data using LLMs (Ollama or Claude)"
     )
     parser.add_argument(
         "--dir", "-d",
@@ -447,26 +460,35 @@ def main():
     parser.add_argument(
         "--summary-model",
         default=None,
-        help=f"Model for monthly summaries (default: {SUMMARY_MODEL})"
+        help="Model for monthly summaries (default: depends on provider)"
     )
     parser.add_argument(
         "--analysis-model",
         default=None,
-        help=f"Model for long-term analysis (default: {ANALYSIS_MODEL})"
+        help="Model for long-term analysis (default: depends on provider)"
+    )
+    parser.add_argument(
+        "--provider", "-p",
+        choices=[PROVIDER_OLLAMA, PROVIDER_CLAUDE],
+        default=DEFAULT_PROVIDER,
+        help=f"LLM provider to use: 'ollama' or 'claude' (default: {DEFAULT_PROVIDER})"
+    )
+    parser.add_argument(
+        "--api-key",
+        default=None,
+        help="API key for Claude (or set ANTHROPIC_API_KEY env var)"
     )
     
     args = parser.parse_args()
-    
-    # Use provided models or fall back to defaults
-    summary_model = args.summary_model if args.summary_model else SUMMARY_MODEL
-    analysis_model = args.analysis_model if args.analysis_model else ANALYSIS_MODEL
     
     run_analysis(
         base_dir=args.dir,
         output_dir=args.output,
         skip_summaries=args.skip_summaries,
-        summary_model=summary_model,
-        analysis_model=analysis_model
+        summary_model=args.summary_model,
+        analysis_model=args.analysis_model,
+        provider=args.provider,
+        api_key=args.api_key
     )
 
 
